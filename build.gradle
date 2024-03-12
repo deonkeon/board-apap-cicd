@@ -1,0 +1,117 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    // gradle 빌드가 일어나면서 npm도 빌드를 해주는 플러그인
+    id 'com.github.node-gradle.node' version '7.0.2'
+}
+
+group = 'com.bit'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.mybatis:mybatis:3.5.15'
+    implementation 'org.mybatis:mybatis-spring:3.0.3'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+}
+
+def generated = 'src/main/generated'
+
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+clean {
+    delete file(generated)
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// npm 빌드 설정
+// package.json의 내용으로 라이브러리 install (의존성 주입)
+task appNpmInstall(type: NpmTask) {
+    dependsOn "npmSetup"
+    description = "Install dependencies from package.json"
+    workingDir = file("${project}/src/main/frontend")
+    args = ["install"]
+}
+
+// npm 빌드를 통해 react 프로젝트를 js, css, html로 변환
+// frontend 폴더를 변수로 선언
+def reactAppDir = "$projectDir/src/main/frontend"
+
+// js, css, html로 변환된 파일들을 src/main/resources/static 폴더로 옮기기
+
+processResources {
+    dependsOn "copyReactFile"
+}
+
+task copyReactFile(type: Copy) {
+    dependsOn "buildReact"
+    from "$reactAppDir/build"
+    into "$projectDir/src/main/resources/static"
+}
+
+task buildReact(type: Exec) {
+    dependsOn "installReact"
+    workingDir "$reactAppDir"
+    inputs.dir "$reactAppDir"
+    group = BasePlugin.BUILD_GROUP
+    if(System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
+}
+
+task installReact(type: Exec) {
+    workingDir "$reactAppDir"
+    inputs.dir "$reactAppDir"
+    group = BasePlugin.BUILD_GROUP
+    if(System.getProperty('os.name').toLowerCase().contains('windows')) {
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine "npm.cmd", "install"
+    } else {
+        commandLine "npm", "audit", "fix"
+        commandLine "npm", "install"
+    }
+}
