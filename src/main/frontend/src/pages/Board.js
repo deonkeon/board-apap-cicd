@@ -239,7 +239,7 @@ const Board = () => {
 
       if (response.data && response.data.item) {
         alert("정상적으로 수정되었습니다.");
-        navi("/board-list");
+        window.location.reload();
       }
     } catch (e) {
       alert("에러 발생.");
