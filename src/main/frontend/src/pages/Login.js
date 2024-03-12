@@ -85,7 +85,7 @@ const Login = () => {
         </Grid>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="/join" variant="body2">
+            <Link href="/app/join" variant="body2">
               계정이 없으시면 회원가입하세요.
             </Link>
           </Grid>
