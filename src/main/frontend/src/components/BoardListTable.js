@@ -61,7 +61,7 @@ const BoardListTable = () => {
                   <TableRow key={index}>
                     <TableCell>{board.boardNo}</TableCell>
                     <TableCell>
-                      <Link to={`/board/${board.boardNo}`}>
+                      <Link to={`/app/board/${board.boardNo}`}>
                         {board.boardTitle}
                       </Link>
                     </TableCell>
