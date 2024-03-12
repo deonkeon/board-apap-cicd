@@ -15,7 +15,7 @@ const Header = () => {
 
   const handleLogout = useCallback(() => {
     dispatch(logout());
-    navi("/login");
+    navi("/app/login");
   }, [dispatch, navi]);
 
   return (
@@ -26,17 +26,17 @@ const Header = () => {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
-            onClick={() => navi("/")}
+            onClick={() => navi("/app/")}
             style={{ cursor: "pointer" }}
           >
             Home
           </Typography>
-          <Button color="inherit" onClick={() => navi("/board-list")}>
+          <Button color="inherit" onClick={() => navi("/app/board-list")}>
             게시판
           </Button>
           {isLogin ? (
             <>
-              <Button color="inherit" onClick={() => navi("/mypage")}>
+              <Button color="inherit" onClick={() => navi("/app/mypage")}>
                 마이페이지
               </Button>
               <Button color="inherit" onClick={handleLogout}>
@@ -45,10 +45,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button color="inherit" onClick={() => navi("/join")}>
+              <Button color="inherit" onClick={() => navi("/app/join")}>
                 회원가입
               </Button>
-              <Button color="inherit" onClick={() => navi("/login")}>
+              <Button color="inherit" onClick={() => navi("/app/login")}>
                 로그인
               </Button>
             </>

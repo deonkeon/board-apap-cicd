@@ -151,7 +151,7 @@ const Post = () => {
         sendFormData.append("uploadFiles", file);
       });
       dispatch(postBoard(sendFormData));
-      navi("/board-list");
+      navi("/app/board-list");
     },
     [dispatch, navi, uploadFiles]
   );

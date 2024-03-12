@@ -46,6 +46,10 @@ public class SecurityConfiguration {
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/", "/member/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/favicon.ico").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/manifest.json").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/asset-manifest.json").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/robots.txt").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/index.html").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/static/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/images/**").permitAll();
@@ -56,6 +60,7 @@ public class SecurityConfiguration {
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/join").permitAll();
                     authorizationManagerRequestMatcherRegistry.requestMatchers("/user/id-check").permitAll();
                     // 이외 접근은 인증된 사용자만 접근가능
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/app/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 // Filter 등록

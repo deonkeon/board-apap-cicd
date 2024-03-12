@@ -19,12 +19,12 @@ function App() {
       <PersistGate loading={null} persistor={persiststore}>
         <Routes>
           <Route element={<Layout></Layout>}>
-            <Route index element={<Home></Home>}></Route>
-            <Route path="/join" element={<Join></Join>}></Route>
-            <Route path="/login" element={<Login></Login>}></Route>
-            <Route path="/board-list" element={<BoardList></BoardList>}></Route>
-            <Route path="/post" element={<Post></Post>}></Route>
-            <Route path="/board/:boardNo" element={<Board></Board>}></Route>
+            <Route path="/app/" element={<Home></Home>}></Route>
+            <Route path="/app/join" element={<Join></Join>}></Route>
+            <Route path="/app/login" element={<Login></Login>}></Route>
+            <Route path="/app/board-list" element={<BoardList></BoardList>}></Route>
+            <Route path="/app/post" element={<Post></Post>}></Route>
+            <Route path="/app/board/:boardNo" element={<Board></Board>}></Route>
           </Route>
         </Routes>
       </PersistGate>

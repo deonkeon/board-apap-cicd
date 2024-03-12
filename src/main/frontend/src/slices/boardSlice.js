@@ -25,7 +25,7 @@ const boardSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(join.fulfilled, (state, action) => {
       alert(`${action.payload.userId}님 회원가입을 축하합니다.`);
-      window.location.href = "/login";
+      window.location.href = "/app/login";
       return state;
     });
     builder.addCase(login.fulfilled, (state, action) => {

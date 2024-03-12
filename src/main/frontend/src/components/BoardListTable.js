@@ -78,7 +78,7 @@ const BoardListTable = () => {
         maxWidth="xl"
         style={{ marginTop: "1%", display: "flex", justifyContent: "right" }}
       >
-        <Button type="button" color="primary" onClick={() => navi("/post")}>
+        <Button type="button" color="primary" onClick={() => navi("/app/post")}>
           글 등록
         </Button>
       </Container>
